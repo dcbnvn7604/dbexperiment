@@ -10,3 +10,7 @@ services:
     volumes:
       - ../localdata/postgres:/var/lib/postgresql/data
       - ../:/dbexperiment
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.2
+    environment:
+      - discovery.type=single-node
