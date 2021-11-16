@@ -1,0 +1,25 @@
+{
+    "mappings": {
+        "dynamic": "strict",
+        "properties": {
+            "name": {
+                "type": "text"
+            },
+            "description": {
+                "type": "text"
+            },
+            "price": {
+                "type": "integer"
+            },
+            "print_length": {
+                "type": "integer"
+            },
+            "file_size": {
+                "type": "integer"
+            },
+            "publication_date": {
+                "type": "date"
+            }
+        }
+    }
+}

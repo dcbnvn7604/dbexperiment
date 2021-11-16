@@ -10,3 +10,8 @@ create table books (
     file_size integer not null,
     publication_date date not null
 );
+
+copy books(id, uuid, name, description, price, print_length, file_size, publication_date)
+from '/tmp/book.csv'
+delimiter ','
+csv header;
