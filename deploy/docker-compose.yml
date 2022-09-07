@@ -1,6 +1,13 @@
 version: "3.8"
 
 services:
+  python:
+    build:
+      context: ../
+      dockerfile: deploy/DockerfilePython
+    volumes:
+      - ../data_tools:/data_tools
+      - ../data:/data
   postgres:
     image: postgres:12.8
     environment:
@@ -9,6 +16,7 @@ services:
       - POSTGRES_DB=dbexperiment
     volumes:
       - ../localdata/postgres:/var/lib/postgresql/data
+      - ../data:/data
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.14.2
     ports:

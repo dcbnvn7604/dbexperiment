@@ -14,14 +14,14 @@ def generate_action():
                 "_id": row["uuid"],
                 "name": row["name"],
                 "description": row["description"],
-                "price": row["price"],
-                "print_length": row["print_length"],
-                "file_size": row["file_size"],
+                "price": int(row["price"]),
+                "print_length": int(row["print_length"]),
+                "file_size": int(row["file_size"]),
                 "publication_date": row["publication_date"]
             }
 
 def main():
-    client = Elasticsearch(['localhost'])
+    client = Elasticsearch(['elasticsearch'])
     with open('../data/book.json', mode="r") as f:
         index_body = json.loads(f.read())
     if client.indices.exists(index="books"):

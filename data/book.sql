@@ -12,6 +12,6 @@ create table books (
 );
 
 copy books(id, uuid, name, description, price, print_length, file_size, publication_date)
-from '/tmp/book.csv'
+from '/data/book.csv'
 delimiter ','
 csv header;

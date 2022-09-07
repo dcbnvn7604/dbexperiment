@@ -2,10 +2,13 @@
 	"folders":
 	[
 		{
-			"path": "."
-		}
+			"path": ".",
+		},
+		{
+			"path": "/home/hoatv/Projects/tmp"
+		},
 	],
 	"settings": {
-		"translate_tabs_to_spaces": true
-	}
+		"translate_tabs_to_spaces": true,
+	},
 }

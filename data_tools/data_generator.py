@@ -2,22 +2,23 @@ import csv
 import uuid
 import random
 import datetime
+import arrow
 from faker import Faker
+
+from settings import TOTAL_RECORD, DATE_START, DATE_END
 
 
 fake = Faker()
 
-number_row = 10000000
-number_row = 1000
 
-with open('../data/book.csv', 'w') as file:
+with open('../data/book.csv', 'w+') as file:
     fieldnames = ['id', 'uuid', 'name', 'description', 'price', 'print_length', 'file_size', 'publication_date']
     writer = csv.DictWriter(file, fieldnames=fieldnames)
     writer.writeheader()
 
-    date_start = datetime.date(2000, 1, 1)
-    date_end = datetime.date(2020, 12, 31)
-    for i in range(1, number_row):
+    date_start = arrow.get(DATE_START).date()
+    date_end = arrow.get(DATE_END).date()
+    for i in range(1, TOTAL_RECORD):
         writer.writerow({
             'id': i,
             'uuid': uuid.uuid4(),
