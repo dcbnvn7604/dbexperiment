@@ -11,6 +11,8 @@ create table books (
     publication_date date not null
 );
 
+create index publication_date on books (publication_date);
+
 copy books(id, uuid, name, description, price, print_length, file_size, publication_date)
 from '/data/book.csv'
 delimiter ','

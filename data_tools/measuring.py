@@ -45,3 +45,4 @@ if 'es' in args.db_type:
 if 'pg' in args.db_type:
     pg_measurer = PGMeasurer(REPORT_DIR, explain=args.explain)
     pg_measurer.measure(start_dates, deltas)
+    pg_measurer.clear()

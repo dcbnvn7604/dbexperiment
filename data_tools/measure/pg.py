@@ -36,3 +36,7 @@ class PG():
         with open(f'{self.report_dir}/pg.{label}.{start_date}.txt', 'w') as f:
             for (line,) in content:
                 f.write(f'{line}\n')
+
+    def clear(self):
+        self.cur.close()
+        self.conn.close()
