@@ -17,9 +17,19 @@ services:
     volumes:
       - ../localdata/postgres:/var/lib/postgresql/data
       - ../data:/data
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.14.2
     ports:
       - 9200:9200
     environment:
       - discovery.type=single-node
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
