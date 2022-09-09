@@ -13,6 +13,8 @@ create table books (
 
 create index publication_date on books (publication_date);
 
+create index description on books using gin (to_tsvector('english', description));
+
 copy books(id, uuid, name, description, price, print_length, file_size, publication_date)
 from '/data/book.csv'
 delimiter ','

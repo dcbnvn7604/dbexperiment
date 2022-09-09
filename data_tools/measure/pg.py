@@ -4,6 +4,7 @@ import csv
 import psycopg
 
 from measure import _collect_time
+from settings import PG_URI
 
 
 class PG():
@@ -11,7 +12,7 @@ class PG():
         self.report_dir = report_dir
         self.explain = explain
         self.times = []
-        self.conn = psycopg.connect("postgresql://root:abc%401234@postgres/dbexperiment")
+        self.conn = psycopg.connect(PG_URI)
         self.cur = self.conn.cursor()
 
     def measure(self, start_dates, deltas):
@@ -25,7 +26,7 @@ class PG():
         if not self.explain:
             self._report_time()
 
-    def _create_entry(self, start_date, end_date, label=None, resp=None, spent_time=None):
+    def _create_entry(self, start_date, end_date, label, resp=None, spent_time=None):
         return {
             'label': label,
             'start_date': start_date,
@@ -34,7 +35,7 @@ class PG():
         }
 
     @_collect_time(_create_entry)
-    def query(self, start_date, end_date, label=None):
+    def query(self, start_date, end_date, label):
         sql = '''
             select avg(price) from books where publication_date >= %s and publication_date <= %s
         '''
@@ -44,17 +45,17 @@ class PG():
         return self.cur.fetchall()
 
     def _clear_explain(self):
-        files = glob.glob(f'{self.report_dir}/pg.*.txt')
+        files = glob.glob(f'{self.report_dir}/pg.aggs.*.txt')
         for file in files:
             os.remove(file)
 
     def _report_explain(self, label, start_date, content):
-        with open(f'{self.report_dir}/pg.{label}.{start_date}.txt', 'w') as f:
+        with open(f'{self.report_dir}/pg.aggs.{label}.{start_date}.txt', 'w') as f:
             for (line,) in content:
                 f.write(f'{line}\n')
 
     def _report_time(self):
-        with open(f'{self.report_dir}/pg.csv', 'w') as f:
+        with open(f'{self.report_dir}/pg.aggs.csv', 'w') as f:
             fields = ["label", "start_date", "result", "spent_time"]
             writer = csv.DictWriter(f, fieldnames=fields)
             writer.writeheader()

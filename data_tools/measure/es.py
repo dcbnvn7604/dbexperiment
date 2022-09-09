@@ -19,14 +19,14 @@ class ES():
             self._clear_explain()
         for (label, _start_dates) in start_dates.items():
             for start_date in _start_dates:
-                resp = self.query(start_date.date(), (start_date + deltas[label]).date(), label=label)
+                resp = self.query(start_date.date(), (start_date + deltas[label]).date(), label)
                 
                 if self.explain:
                     self._report_explain(label, start_date, resp)
         if not self.explain:
             self._report_time()
 
-    def _create_entry(self, start_date, end_date, label=None, resp=None, spent_time=None):
+    def _create_entry(self, start_date, end_date, label, resp=None, spent_time=None):
         return {
             'label': label,
             'start_date': start_date,
@@ -35,7 +35,7 @@ class ES():
         }
 
     @_collect_time(_create_entry)
-    def query(self, start_date, end_date, label=None):
+    def query(self, start_date, end_date, label):
         kwargs = {
             "index": "books",
             "query": { "range": { "publication_date": { "gte": start_date, "lte": end_date} } },
@@ -48,16 +48,16 @@ class ES():
         return self.es.search(**kwargs)
 
     def _clear_explain(self):
-        files = glob.glob(f'{self.report_dir}/es.*.txt')
+        files = glob.glob(f'{self.report_dir}/es.aggs.*.txt')
         for file in files:
             os.remove(file)
 
     def _report_explain(self, label, start_date, content):
-        with open(f'{self.report_dir}/es.{label}.{start_date}.txt', 'w') as f:
+        with open(f'{self.report_dir}/es.aggs.{label}.{start_date}.txt', 'w') as f:
             f.write(json.dumps(content, indent=4))
 
     def _report_time(self):
-        with open(f'{self.report_dir}/es.csv', 'w') as f:
+        with open(f'{self.report_dir}/es.aggs.csv', 'w') as f:
             fields = ["label", "start_date", "result", "spent_time"]
             writer = csv.DictWriter(f, fieldnames=fields)
             writer.writeheader()

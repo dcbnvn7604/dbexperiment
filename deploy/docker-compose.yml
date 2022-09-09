@@ -28,6 +28,8 @@ services:
       - 9200:9200
     environment:
       - discovery.type=single-node
+    volumes:
+      - ../localdata/elasticsearch:/usr/share/elasticsearch/data
     deploy:
       resources:
         limits:
