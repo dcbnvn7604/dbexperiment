@@ -24,8 +24,6 @@ services:
           memory: 4G
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.14.2
-    ports:
-      - 9200:9200
     environment:
       - discovery.type=single-node
     volumes:
@@ -35,3 +33,11 @@ services:
         limits:
           cpus: '2'
           memory: 4G
+  mongo:
+    image: mongo:5
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: abc@1234
+      MONGO_INITDB_DATABASE: dbexperiment
+    volumes:
+      - ../data:/data

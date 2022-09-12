@@ -10,6 +10,7 @@ from os import path, mkdir
 from settings import DATE_START, DATE_END, ROUND
 from measure.es import ES as ESMeasurer
 from measure.pg import PG as PGMeasurer
+from measure.aggregate.mg import Mongo as MGAggregateMeasurer
 from measure.textsearch import make_query_parameters
 from measure.textsearch.es import ES as ESTextSearchMeasurer
 from measure.textsearch.pg import PG as PGTextSearchMeasurer
@@ -22,7 +23,7 @@ def main():
     parser = argparse.ArgumentParser(description='Measure')
     parser.add_argument('-t', dest='topic', required=True, choices=['aggs', 'ts'], help='topic')
     parser.add_argument('-e', help='explain', dest='explain', action='store_const', const=True, default=False)
-    parser.add_argument('db_type', nargs='+', help='db_type to measure', choices=['es', 'pg'])
+    parser.add_argument('db_type', nargs='+', help='db_type to measure', choices=['es', 'pg', 'mg'])
 
     args = parser.parse_args()
 
@@ -61,6 +62,9 @@ def measure_aggregation(args):
         pg_measurer = PGMeasurer(REPORT_DIR, explain=args.explain)
         pg_measurer.measure(start_dates, deltas)
         pg_measurer.clear()
+    if 'mg' in args.db_type:
+        mg_measurer = MGAggregateMeasurer(REPORT_DIR, explain=args.explain)
+        mg_measurer.measure(start_dates, deltas)
 
 
 def measure_textsearch(args):
