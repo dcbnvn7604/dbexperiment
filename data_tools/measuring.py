@@ -8,8 +8,8 @@ import argparse
 from os import path, mkdir
 
 from settings import DATE_START, DATE_END, ROUND
-from measure.es import ES as ESMeasurer
-from measure.pg import PG as PGMeasurer
+from measure.aggregate.es import Elasticsearch as ESAggregateMeasurer
+from measure.aggregate.pg import Postgres as PGAggregateMeasurer
 from measure.aggregate.mg import Mongo as MGAggregateMeasurer
 from measure.textsearch import make_query_parameters
 from measure.textsearch.es import ES as ESTextSearchMeasurer
@@ -56,10 +56,10 @@ def measure_aggregation(args):
             start_dates[label].add(rand_date)
 
     if 'es' in args.db_type:
-        es_measurer = ESMeasurer(REPORT_DIR, explain=args.explain)
+        es_measurer = ESAggregateMeasurer(REPORT_DIR, explain=args.explain)
         es_measurer.measure(start_dates, deltas)
     if 'pg' in args.db_type:
-        pg_measurer = PGMeasurer(REPORT_DIR, explain=args.explain)
+        pg_measurer = PGAggregateMeasurer(REPORT_DIR, explain=args.explain)
         pg_measurer.measure(start_dates, deltas)
         pg_measurer.clear()
     if 'mg' in args.db_type:
