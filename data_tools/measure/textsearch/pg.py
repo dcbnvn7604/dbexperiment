@@ -34,9 +34,9 @@ class PG():
     @_collect_time(_create_entry)
     def query(self, text):
         sql = '''
-            select uuid, ts_rank(to_tsvector('english', description), plainto_tsquery('english', %s)) as rank
-            from books
-            where to_tsvector('english', description) @@ plainto_tsquery('english', %s)
+            select uuid, ts_rank(to_tsvector('english', text_field), plainto_tsquery('english', %s)) as rank
+            from entry
+            where to_tsvector('english', text_field) @@ plainto_tsquery('english', %s)
             order by rank desc
         '''
         if self.explain:

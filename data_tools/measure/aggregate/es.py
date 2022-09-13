@@ -20,16 +20,16 @@ class Elasticsearch(AggregateMixin):
         return {
             'label': label,
             'start_date': start_date,
-            'result': resp["aggregations"]["avg_price"]["value"],
+            'result': resp["aggregations"]["avg_int_field"]["value"],
             'spent_time': spent_time,
         }
 
     @_collect_time(_create_entry)
     def query(self, start_date, end_date, label):
         kwargs = {
-            "index": "books",
-            "query": { "range": { "publication_date": { "gte": start_date.date(), "lte": end_date.date() } } },
-            "aggs": { "avg_price": { "avg" : { "field": "price"} } },
+            "index": "entry",
+            "query": { "range": { "date_field": { "gte": start_date.date(), "lte": end_date.date() } } },
+            "aggs": { "avg_int_field": { "avg" : { "field": "int_field"} } },
             "profile": self.explain,
 
         }

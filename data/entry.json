@@ -1,0 +1,16 @@
+{
+    "mappings": {
+        "dynamic": "strict",
+        "properties": {
+            "text_field": {
+                "type": "text"
+            },
+            "int_field": {
+                "type": "integer"
+            },
+            "date_field": {
+                "type": "date"
+            }
+        }
+    }
+}

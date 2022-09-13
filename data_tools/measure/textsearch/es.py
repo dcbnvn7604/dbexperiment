@@ -34,10 +34,10 @@ class ES():
     @_collect_time(_create_entry)
     def query(self, text):
         kwargs = {
-            "index": "books",
+            "index": "entry",
             "query": {
                 "match": {
-                    "description": text
+                    "text_field": text
                 }
             },
             "profile": self.explain,

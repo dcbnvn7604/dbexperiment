@@ -17,17 +17,17 @@ class Mongo(AggregateMixin):
         return {
             'label': label,
             'start_date': start_date,
-            'result': resp["cursor"]["firstBatch"][0]["avg_price"] if resp["cursor"]["firstBatch"] else None,
+            'result': resp["cursor"]["firstBatch"][0]["avg_int_field"] if resp["cursor"]["firstBatch"] else None,
             'spent_time': spent_time,
         }
 
     @_collect_time(_create_entry)
     def query(self, start_date, end_date, label):
         query = {
-            'aggregate': 'books',
+            'aggregate': 'entry',
             'pipeline': [
-                { '$match': { 'publication_date': { '$gte': start_date.format('YYYY-MM-DD'), '$lte': end_date.format('YYYY-MM-DD') } } },
-                { '$group': { '_id' : None, 'avg_price': { '$avg': '$price' } } },
+                { '$match': { 'date_field': { '$gte': start_date.format('YYYY-MM-DD'), '$lte': end_date.format('YYYY-MM-DD') } } },
+                { '$group': { '_id' : None, 'avg_int_field': { '$avg': '$price' } } },
             ],
             'cursor': {}
         }

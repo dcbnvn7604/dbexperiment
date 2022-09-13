@@ -27,7 +27,7 @@ class Postgres(AggregateMixin):
     @_collect_time(_create_entry)
     def query(self, start_date, end_date, label):
         sql = '''
-            select avg(price) from books where publication_date >= %s and publication_date <= %s
+            select avg(int_field) from entry where date_field >= %s and date_field <= %s
         '''
         if self.explain:
             sql = f'explain {sql}'

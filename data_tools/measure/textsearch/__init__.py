@@ -7,7 +7,7 @@ from settings import PG_URI, TOTAL_RECORD, ROUND
 def make_query_parameters(explain):
     _round = ROUND if not explain else 1
     sql = '''
-        select id, description from books where id in (%s)
+        select id, text_field from entry where id in (%s)
     '''
     record_ids = []
     for i in range(_round):
@@ -20,15 +20,15 @@ def make_query_parameters(explain):
             result = cur.execute(sql, record_ids).fetchall()
 
     parameters = []
-    for (id, description, ) in result:
-        space_count = description.count(' ')
+    for (id, text_field, ) in result:
+        space_count = text_field.count(' ')
         start_space = random.randint(1, space_count)
-        start_pos = find_nth(description, ' ', start_space)
-        end_pos = find_nth(description, ' ', start_space + 8)
+        start_pos = find_nth(text_field, ' ', start_space)
+        end_pos = find_nth(text_field, ' ', start_space + 8)
         if end_pos > 0:
-            parameters.append((id, description[start_pos:end_pos]))
+            parameters.append((id, text_field[start_pos:end_pos]))
         else:
-            parameters.append((id, description[start_pos:]))
+            parameters.append((id, text_field[start_pos:]))
     return parameters
 
 
