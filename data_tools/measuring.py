@@ -12,8 +12,8 @@ from measure.aggregate.es import Elasticsearch as ESAggregateMeasurer
 from measure.aggregate.pg import Postgres as PGAggregateMeasurer
 from measure.aggregate.mg import Mongo as MGAggregateMeasurer
 from measure.textsearch import make_query_parameters
-from measure.textsearch.es import ES as ESTextSearchMeasurer
-from measure.textsearch.pg import PG as PGTextSearchMeasurer
+from measure.textsearch.es import Elasticsearch as ESTextSearchMeasurer
+from measure.textsearch.pg import Postgres as PGTextSearchMeasurer
 from measure.textsearch.mg import Mongo as MGTextSearchMeasurer
 
 

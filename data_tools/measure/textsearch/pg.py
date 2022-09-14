@@ -5,25 +5,16 @@ import psycopg
 
 from settings import PG_URI
 from measure import _collect_time
+from measure.textsearch import TextsearchMixin
 
 
-class PG():
+class Postgres(TextsearchMixin):
     def __init__(self, report_dir, explain=False):
         self.report_dir = report_dir
         self.explain = explain
         self.times = []
         self.conn = psycopg.connect(PG_URI)
         self.cur = self.conn.cursor()
-
-    def measure(self, parameters):
-        if self.explain:
-            self._clear_explain()
-        for (id, text) in parameters:
-            resp = self.query(text)
-            if self.explain:
-                self._report_explain(id, resp)
-        if not self.explain:
-            self._report_time()
 
     def _create_entry(self, text, resp=None, spent_time=None):
         return {
@@ -49,18 +40,11 @@ class PG():
             for (line,) in content:
                 f.write(f'{line}\n')
 
-    def _clear_explain(self):
-        files = glob.glob(f'{self.report_dir}/pg.ts.*.txt')
-        for file in files:
-            os.remove(file)
+    def _get_explain_glob(self):
+        return f'{self.report_dir}/pg.ts.*.txt'
 
-    def _report_time(self):
-        with open(f'{self.report_dir}/pg.ts.csv', 'w') as f:
-            fields = ["id", "spent_time"]
-            writer = csv.DictWriter(f, fieldnames=fields)
-            writer.writeheader()
-            for entry in self.times:
-                writer.writerow(entry)
+    def _get_time_report_path(self):
+        return f'{self.report_dir}/pg.ts.csv'
 
     def clear(self):
         self.cur.close()
