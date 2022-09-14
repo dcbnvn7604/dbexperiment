@@ -45,8 +45,20 @@ def report_textsearch():
     pg_spent_time = pd.read_csv(f'{REPORT_DIR}/pg.ts.csv') \
         .rename(columns={'spent_time': 'pg_spent_time'})['pg_spent_time'] \
         .mean()
-    ratio = es_spent_time / pg_spent_time
-    df = pd.DataFrame(data={'es_spent_time': [es_spent_time], 'pg_spent_time': [pg_spent_time], 'es/pg': [ratio]})
+    mg_spent_time = pd.read_csv(f'{REPORT_DIR}/mg.ts.csv') \
+        .rename(columns={'spent_time': 'mg_spent_time'})['mg_spent_time'] \
+        .mean()
+    es_pg = es_spent_time / pg_spent_time
+    es_mg = es_spent_time / mg_spent_time
+    pg_mg = pg_spent_time / mg_spent_time
+    df = pd.DataFrame(data={
+        'es_spent_time': [es_spent_time],
+        'pg_spent_time': [pg_spent_time],
+        'mg_spent_time': [mg_spent_time],
+        'es/pg': [es_pg],
+        'es/mg': [es_mg],
+        'pg/mg': [pg_mg],
+    })
     df.to_csv(f'{REPORT_DIR}/all.ts.csv')
 
 
