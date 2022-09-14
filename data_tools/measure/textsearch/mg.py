@@ -26,6 +26,7 @@ class Mongo(TextsearchMixin):
             'filter': { '$text': { '$search':  text } },
             'sort': { 'score': { '$meta': "textScore" } },
             'projection': { 'score': { '$meta': "textScore" } },
+            'allowDiskUse': True
         }
         if self.explain:
             query = {
