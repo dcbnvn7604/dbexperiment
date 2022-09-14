@@ -1,5 +1,8 @@
 import random
 import psycopg
+import glob
+import os
+import csv
 
 from settings import PG_URI, TOTAL_RECORD, ROUND
 
@@ -38,3 +41,28 @@ def find_nth(haystack, needle, n):
         start = haystack.find(needle, start+len(needle))
         n -= 1
     return start
+
+
+class TextsearchMixin():
+    def measure(self, parameters):
+        if self.explain:
+            self._clear_explain()
+        for (id, text) in parameters:
+            resp = self.query(text)
+            if self.explain:
+                self._report_explain(id, resp)
+        if not self.explain:
+            self._report_time()
+
+    def _clear_explain(self):
+        files = glob.glob(self._get_explain_glob())
+        for file in files:
+            os.remove(file)
+
+    def _report_time(self):
+        with open(self._get_time_report_path(), 'w') as f:
+            fields = ["id", "spent_time"]
+            writer = csv.DictWriter(f, fieldnames=fields)
+            writer.writeheader()
+            for entry in self.times:
+                writer.writerow(entry)

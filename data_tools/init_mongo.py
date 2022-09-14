@@ -9,6 +9,7 @@ def main():
     db.drop_collection('entry')
     collection = db.get_collection('entry')
     collection.create_index('date_field')
+    collection.create_index([('text_field', 'text')])
 
 if __name__ == '__main__':
     main()

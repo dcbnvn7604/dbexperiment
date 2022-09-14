@@ -14,6 +14,7 @@ from measure.aggregate.mg import Mongo as MGAggregateMeasurer
 from measure.textsearch import make_query_parameters
 from measure.textsearch.es import ES as ESTextSearchMeasurer
 from measure.textsearch.pg import PG as PGTextSearchMeasurer
+from measure.textsearch.mg import Mongo as MGTextSearchMeasurer
 
 
 REPORT_DIR = '_report'
@@ -76,6 +77,9 @@ def measure_textsearch(args):
         pg_measurer = PGTextSearchMeasurer(REPORT_DIR, explain=args.explain)
         pg_measurer.measure(parameters)
         pg_measurer.clear()
+    if 'mg' in args.db_type:
+        mg_measurer = MGTextSearchMeasurer(REPORT_DIR, explain=args.explain)
+        mg_measurer.measure(parameters)
 
 
 if __name__ == '__main__':
