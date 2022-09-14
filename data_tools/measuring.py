@@ -78,8 +78,7 @@ def measure_textsearch(args):
         pg_measurer.measure(parameters)
         pg_measurer.clear()
     if 'mg' in args.db_type:
-        mg_measurer = MGTextSearchMeasurer(REPORT_DIR, explain=args.explain)
-        mg_measurer.measure(parameters)
+        raise Exception('mongo use too much memory and storage')
 
 
 if __name__ == '__main__':
