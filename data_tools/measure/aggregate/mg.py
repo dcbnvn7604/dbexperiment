@@ -27,7 +27,7 @@ class Mongo(AggregateMixin):
             'aggregate': 'entry',
             'pipeline': [
                 { '$match': { 'date_field': { '$gte': start_date.format('YYYY-MM-DD'), '$lte': end_date.format('YYYY-MM-DD') } } },
-                { '$group': { '_id' : None, 'avg_int_field': { '$avg': '$price' } } },
+                { '$group': { '_id' : None, 'avg_int_field': { '$avg': '$int_field' } } },
             ],
             'cursor': {}
         }
