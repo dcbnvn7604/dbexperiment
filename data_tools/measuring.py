@@ -16,6 +16,7 @@ from measure.textsearch.pg import Postgres as PGTextSearchMeasurer
 from measure.textsearch.mg import Mongo as MGTextSearchMeasurer
 from measure.join import make_query_parameters as make_join_query_parameters
 from measure.join.pg import Postgre as PGJoinMeasurer
+from measure.join.mg import Mongo as MGJoinMeasurer
 
 
 REPORT_DIR = '_report'
@@ -90,6 +91,9 @@ def measure_join(args):
         pg_measurer = PGJoinMeasurer(REPORT_DIR, explain=args.explain)
         pg_measurer.measure(parameters)
         pg_measurer.clear()
+    if 'mg' in args.db_type:
+        mg_measurer = MGJoinMeasurer(REPORT_DIR, explain=args.explain)
+        mg_measurer.measure(parameters)
 
 
 if __name__ == '__main__':
