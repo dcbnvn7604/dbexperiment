@@ -3,7 +3,6 @@ from collections import defaultdict
 import arrow
 from arrow.arrow import Arrow
 import random
-
 import argparse
 from os import path, mkdir
 
@@ -15,6 +14,8 @@ from measure.textsearch import make_query_parameters
 from measure.textsearch.es import Elasticsearch as ESTextSearchMeasurer
 from measure.textsearch.pg import Postgres as PGTextSearchMeasurer
 from measure.textsearch.mg import Mongo as MGTextSearchMeasurer
+from measure.join import make_query_parameters as make_join_query_parameters
+from measure.join.pg import Postgre as PGJoinMeasurer
 
 
 REPORT_DIR = '_report'
@@ -22,7 +23,7 @@ REPORT_DIR = '_report'
 
 def main():
     parser = argparse.ArgumentParser(description='Measure')
-    parser.add_argument('-t', dest='topic', required=True, choices=['aggs', 'ts'], help='topic')
+    parser.add_argument('-t', dest='topic', required=True, choices=['aggs', 'ts', 'join'], help='topic')
     parser.add_argument('-e', help='explain', dest='explain', action='store_const', const=True, default=False)
     parser.add_argument('db_type', nargs='+', help='db_type to measure', choices=['es', 'pg', 'mg'])
 
@@ -35,6 +36,8 @@ def main():
         measure_aggregation(args)
     if args.topic == 'ts':
         measure_textsearch(args)
+    if args.topic == 'join':
+        measure_join(args)
 
 
 def measure_aggregation(args):
@@ -79,6 +82,14 @@ def measure_textsearch(args):
         pg_measurer.clear()
     if 'mg' in args.db_type:
         raise Exception('mongo use too much memory and storage')
+
+
+def measure_join(args):
+    parameters = make_join_query_parameters(args.explain)
+    if 'pg' in args.db_type:
+        pg_measurer = PGJoinMeasurer(REPORT_DIR, explain=args.explain)
+        pg_measurer.measure(parameters)
+        pg_measurer.clear()
 
 
 if __name__ == '__main__':
