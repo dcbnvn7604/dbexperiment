@@ -8,14 +8,15 @@ REPORT_DIR = '_report'
 
 def main():
     parser = argparse.ArgumentParser(description='Report')
-    parser.add_argument('-t', dest='topic', required=True, choices=['aggs', 'ts'], help='topic')
+    parser.add_argument('-t', dest='topic', required=True, choices=['aggs', 'ts', 'join'], help='topic')
     args = parser.parse_args()
 
     if args.topic == 'aggs':
         report_aggregation()
     if args.topic == 'ts':
         report_textsearch()
-
+    if args.topic == 'join':
+        report_join()
 
 def report_aggregation():
     es_df = pd.read_csv(f'{REPORT_DIR}/es.aggs.csv') \
@@ -53,6 +54,19 @@ def report_textsearch():
     })
     df.to_csv(f'{REPORT_DIR}/all.ts.csv')
 
+
+def report_join():
+    pg_df = pd.read_csv(f'{REPORT_DIR}/pg.join.csv') \
+        .rename(columns={'spent_time': 'pg_spent_time'}) \
+        .groupby('period')['pg_spent_time'] \
+        .mean()
+    mg_df = pd.read_csv(f'{REPORT_DIR}/mg.join.csv') \
+        .rename(columns={'spent_time': 'mg_spent_time'}) \
+        .groupby('period')['mg_spent_time'] \
+        .mean()
+    df = pg_df.to_frame().merge(mg_df, on='period')
+    df['pg/mg'] = df['pg_spent_time'] / df['mg_spent_time']
+    df.to_csv(f'{REPORT_DIR}/all.join.csv')
 
 if __name__ == '__main__':
     main()
