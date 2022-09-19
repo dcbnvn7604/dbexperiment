@@ -9,7 +9,9 @@ services:
       - ../data_tools:/data_tools
       - ../data:/data
   postgres:
-    image: postgres:12.8
+    build:
+      context: ../
+      dockerfile: deploy/DockerfilePostgre
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=abc@1234

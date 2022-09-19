@@ -6,7 +6,10 @@ create table entry (
     uuid uuid not null unique,
     text_field text not null,
     int_field integer not null,
-    date_field date not null
+    date_field date not null,
+    point_field geometry not null,
+    lat numeric,
+    long numeric
 );
 
 create index date_field on entry (date_field);
@@ -22,7 +25,7 @@ create table entry_child (
 
 create index entry_child_date_field on entry_child (date_field);
 
-copy entry(id, uuid, text_field, int_field, date_field)
+copy entry(id, uuid, text_field, int_field, date_field, point_field, lat, long)
 from '/data/entry.csv'
 delimiter ','
 csv header;

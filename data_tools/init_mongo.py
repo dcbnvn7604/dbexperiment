@@ -12,6 +12,7 @@ def main():
     collection.create_index('date_field')
     collection.create_index([('text_field', 'text')])
     collection.create_index([('uuid', 'hashed')])
+    collection.create_index([('mg_point_field', '2dsphere')])
     collection = db.get_collection('entry_child')
     collection.create_index('date_field')
 

@@ -10,6 +10,9 @@
             },
             "date_field": {
                 "type": "date"
+            },
+            "point_field": {
+                "type": "geo_point"
             }
         }
     }

@@ -1,5 +1,6 @@
 import csv
 import json
+import geojson
 
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import streaming_bulk
@@ -14,7 +15,8 @@ def generate_action():
                 "_id": row["uuid"],
                 "text_field": row["text_field"],
                 "int_field": int(row["int_field"]),
-                "date_field": row["date_field"]
+                "date_field": row["date_field"],
+                "point_field": [float(row['long']), float(row['lat'])],
             }
 
 def main():
