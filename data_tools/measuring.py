@@ -17,6 +17,8 @@ from measure.textsearch.mg import Mongo as MGTextSearchMeasurer
 from measure.join import make_query_parameters as make_join_query_parameters
 from measure.join.pg import Postgre as PGJoinMeasurer
 from measure.join.mg import Mongo as MGJoinMeasurer
+from measure.geo import make_query_parameters as make_geo_query_parameters
+from measure.geo.pg import Postgre as PGGeoMeasurer
 
 
 REPORT_DIR = '_report'
@@ -24,7 +26,7 @@ REPORT_DIR = '_report'
 
 def main():
     parser = argparse.ArgumentParser(description='Measure')
-    parser.add_argument('-t', dest='topic', required=True, choices=['aggs', 'ts', 'join'], help='topic')
+    parser.add_argument('-t', dest='topic', required=True, choices=['aggs', 'ts', 'join', 'geo'], help='topic')
     parser.add_argument('-e', help='explain', dest='explain', action='store_const', const=True, default=False)
     parser.add_argument('db_type', nargs='+', help='db_type to measure', choices=['es', 'pg', 'mg'])
 
@@ -39,6 +41,8 @@ def main():
         measure_textsearch(args)
     if args.topic == 'join':
         measure_join(args)
+    if args.topic == 'geo':
+        measure_geo(args)
 
 
 def measure_aggregation(args):
@@ -94,6 +98,13 @@ def measure_join(args):
     if 'mg' in args.db_type:
         mg_measurer = MGJoinMeasurer(REPORT_DIR, explain=args.explain)
         mg_measurer.measure(parameters)
+
+
+def measure_geo(args):
+    parameters = make_geo_query_parameters(args.explain)
+    if 'pg' in args.db_type:
+        pg_measurer = PGGeoMeasurer(REPORT_DIR, explain=args.explain)
+        pg_measurer.measure(parameters)
 
 
 if __name__ == '__main__':

@@ -1,7 +1,4 @@
-import glob
-import os
 import json
-import csv
 from elasticsearch import Elasticsearch as ElasticsearchClient
 
 from settings import ES_URI

@@ -16,6 +16,8 @@ create index date_field on entry (date_field);
 
 create index text_field on entry using gin (to_tsvector('english', text_field));
 
+create index point_field on entry using gist (point_field);
+
 create table entry_child (
     uuid uuid not null unique,
     parrent_uuid uuid not null,
