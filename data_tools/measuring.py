@@ -20,6 +20,7 @@ from measure.join.mg import Mongo as MGJoinMeasurer
 from measure.geo import make_query_parameters as make_geo_query_parameters
 from measure.geo.pg import Postgre as PGGeoMeasurer
 from measure.geo.es import Elasticsearch as ESGeoMeasurer
+from measure.geo.mg import Mongo as MGGeoMeasurer
 
 
 REPORT_DIR = '_report'
@@ -106,9 +107,13 @@ def measure_geo(args):
     if 'pg' in args.db_type:
         pg_measurer = PGGeoMeasurer(REPORT_DIR, explain=args.explain)
         pg_measurer.measure(parameters)
+        pg_measurer.clear()
     if 'es' in args.db_type:
         es_measurer = ESGeoMeasurer(REPORT_DIR, explain=args.explain)
         es_measurer.measure(parameters)
+    if 'mg' in args.db_type:
+        mg_measurer = MGGeoMeasurer(REPORT_DIR, explain=args.explain)
+        mg_measurer.measure(parameters)
 
 
 if __name__ == '__main__':
