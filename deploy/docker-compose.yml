@@ -22,8 +22,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '2'
-          memory: 4G
+          cpus: '1'
+          memory: 1G
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.14.2
     environment:
@@ -33,8 +33,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '2'
-          memory: 4G
+          cpus: '1'
+          memory: 1G
   mongo:
     image: mongo:5
     environment:
@@ -46,5 +46,5 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '2'
-          memory: 4G
+          cpus: '1'
+          memory: 1G
