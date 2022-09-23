@@ -5,3 +5,4 @@ ROUND = 200
 PG_URI = 'postgresql://root:abc%401234@postgres/dbexperiment'
 ES_URI = 'http://elasticsearch:9200'
 MG_URI = 'mongodb://root:abc%401234@mongo:27017'
+CLOSEST_RELATION_TOTAL = 3

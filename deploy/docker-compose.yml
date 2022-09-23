@@ -48,3 +48,12 @@ services:
         limits:
           cpus: '1'
           memory: 1G
+  neo4j:
+    image: neo4j:4.3
+    volumes:
+      - ../localdata/neo4j/data:/data
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G

@@ -2,3 +2,5 @@ entry.csv
 entry.*.csv
 entry_child.csv
 entry_child.*.csv
+entry_rel.csv
+entry_rel.*.csv
