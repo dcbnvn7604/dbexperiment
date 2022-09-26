@@ -23,6 +23,7 @@ from measure.geo.es import Elasticsearch as ESGeoMeasurer
 from measure.geo.mg import Mongo as MGGeoMeasurer
 from measure.relation import make_query_parameters as make_relation_query_parameters
 from measure.relation.n4j import Neo4j as N4JRelationMeasurer
+from measure.relation.pg import Postgre as PGRelationMeasurer
 
 
 REPORT_DIR = '_report'
@@ -126,6 +127,10 @@ def measure_rel(args):
         n4j_measurer = N4JRelationMeasurer(REPORT_DIR, explain=args.explain)
         n4j_measurer.measure(parameters)
         n4j_measurer.close()
+    if 'pg' in args.db_type:
+        pg_measurer = PGRelationMeasurer(REPORT_DIR, explain=args.explain)
+        pg_measurer.measure(parameters)
+        pg_measurer.clear()
 
 
 if __name__ == '__main__':
