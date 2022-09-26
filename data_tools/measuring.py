@@ -21,6 +21,8 @@ from measure.geo import make_query_parameters as make_geo_query_parameters
 from measure.geo.pg import Postgre as PGGeoMeasurer
 from measure.geo.es import Elasticsearch as ESGeoMeasurer
 from measure.geo.mg import Mongo as MGGeoMeasurer
+from measure.relation import make_query_parameters as make_relation_query_parameters
+from measure.relation.n4j import Neo4j as N4JRelationMeasurer
 
 
 REPORT_DIR = '_report'
@@ -28,9 +30,9 @@ REPORT_DIR = '_report'
 
 def main():
     parser = argparse.ArgumentParser(description='Measure')
-    parser.add_argument('-t', dest='topic', required=True, choices=['aggs', 'ts', 'join', 'geo'], help='topic')
+    parser.add_argument('-t', dest='topic', required=True, choices=['aggs', 'ts', 'join', 'geo', 'rel'], help='topic')
     parser.add_argument('-e', help='explain', dest='explain', action='store_const', const=True, default=False)
-    parser.add_argument('db_type', nargs='+', help='db_type to measure', choices=['es', 'pg', 'mg'])
+    parser.add_argument('db_type', nargs='+', help='db_type to measure', choices=['es', 'pg', 'mg', 'n4j'])
 
     args = parser.parse_args()
 
@@ -45,6 +47,8 @@ def main():
         measure_join(args)
     if args.topic == 'geo':
         measure_geo(args)
+    if args.topic == 'rel':
+        measure_rel(args)
 
 
 def measure_aggregation(args):
@@ -114,6 +118,14 @@ def measure_geo(args):
     if 'mg' in args.db_type:
         mg_measurer = MGGeoMeasurer(REPORT_DIR, explain=args.explain)
         mg_measurer.measure(parameters)
+
+
+def measure_rel(args):
+    parameters = make_relation_query_parameters(args.explain)
+    if 'n4j' in args.db_type:
+        n4j_measurer = N4JRelationMeasurer(REPORT_DIR, explain=args.explain)
+        n4j_measurer.measure(parameters)
+        n4j_measurer.close()
 
 
 if __name__ == '__main__':

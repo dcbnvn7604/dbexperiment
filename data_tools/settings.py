@@ -6,3 +6,6 @@ PG_URI = 'postgresql://root:abc%401234@postgres/dbexperiment'
 ES_URI = 'http://elasticsearch:9200'
 MG_URI = 'mongodb://root:abc%401234@mongo:27017'
 CLOSEST_RELATION_TOTAL = 3
+N4J_URI = 'bolt://neo4j:7687'
+N4J_USER = 'neo4j'
+N4J_PASSWORD = 'abc@1234'

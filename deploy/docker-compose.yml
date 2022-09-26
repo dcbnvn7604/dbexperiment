@@ -52,6 +52,7 @@ services:
     image: neo4j:4.3
     volumes:
       - ../localdata/neo4j/data:/data
+      - ../data:/_data
     deploy:
       resources:
         limits:
